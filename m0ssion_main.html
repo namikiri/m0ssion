@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<!--
+	
+	This is     ___          _             
+	 _ __ ___  / _ \ ___ ___(_) ___  _ __  
+	| '_ ` _ \| |_| / __/ __| |/ _ \| '_ \
+	| | | | | | |_| \__ \__ | | (_) | | | |
+	|_| |_| |_|\___/|___|___|_|\___/|_| |_|
+
+	A minimalistic extensible in-browser framework for Galaxy chat.
+
+	Copyright (c) 2017 IDENT Software ~ http://identsoft.org
+
+	m0ssion is a free software, you can use, modify
+	and redistribute it under the terms of GNU GPL version 3. 
+	See https://www.gnu.org/licenses/gpl-3.0.html or LICENSE file.
+
+
+	                    ~ DISCLAIMER ~
+	AUTHORS OF THIS SOFTWARE ARE NOT AFFILIATED WITH MOBSTUDIO LTD.
+	WE ARE NOT RESPONSIBLE FOR ANY EFFECT ON YOU ACCOUNT AND/OR
+	CHARACTER IN THE CHAT. KEEP IN MIND THAT IT IS PROHIBITED
+	TO USE ANY THIRD-PARTY SOFTWARE WITH THE GALAXY CHAT.
+
+	YOU ARE USING THIS SOFTWARE AT YOUR OWN RISK.
+
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="m0ssion_style.css">
+	<script type="text/javascript" src="lib/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/ace.js"></script>
+	<script type="text/javascript" src="lib/ace-js.js"></script>
+	<script type="text/javascript" src="lib/ace-theme-tomorrownight.js"></script>
+	<script type="text/javascript" src="m0ssion_core.js"></script>
+	<title>m0ssion framework</title>
+</head>
+<body>
+
+	<div id="wrapper">
+	<h1>Welcome to m0ssion</h1>
+	<div id="subheader">Version <span id="m0s-version">1.3.3.7</span></div>
+
+	<div id="tabs">
+		<div class="tab-pointer active" id="tab-overview" data-tab-name="overview">
+			Overview
+		</div>
+		<div class="tab-pointer" id="tab-editor" data-tab-name="editor">
+			Editor
+		</div>
+		<div class="tab-pointer" id="tab-about" data-tab-name="about">
+			About
+		</div>
+	</div>
+	<div id="content">
+		<div class="tab-content" id="tab-content-overview">
+			<h2>Modules</h2>
+			<div id="modules-list">
+				<div style="text-align: center;">Loading your modules, wait please! :3</div>
+			</div>
+			<div id="modules-tools" class="buttonset">
+				<div class="control button" id="modules-new" title="Create a new module">New...</div>
+			</div>
+		</div>
+
+		<div class="tab-content" id="tab-content-editor">
+			<h2>Module editor</h2>
+			<input type="text" class="control text" id="module-name" placeholder="Name of your module">
+			<div id="module-code">// Write your code here.
+// Reference: https://github.com/namikiri/m0ssion/wiki
+
+</div>
+
+			<div id="editor-tools" class="buttonset">
+				<div class="control button" id="editor-save" title="Save current module">Save</div>
+				<div class="control button" id="editor-reset" title="Clear all fields">Reset</div>
+			</div>
+		</div>
+
+
+		<div class="tab-content" id="tab-content-about">
+			<h2>About m0ssion</h2>
+			<div class="about-text" id="about-info">
+				You are using <b>m0ssion</b>, a minimalistic extensible in-browser framework for the Galaxy chat.
+				<br>
+				The aim of m0ssion is to provide an easy and powerful tool for those who wants to improve their experience with <a href="http://galaxy.mobstudio.ru">Galaxy</a> chat or are annoyed by some &laquo;features&raquo; like permanent money sucking, silly games, annoying appearing objects or disturbing notifications. Nevertheless, this framework can do almost everything with the chat. It depends only on your fantasy and programming skills. 
+			</div>
+
+			<h2>Documentation</h2>
+			<div class="about-text" id="about-info">
+				m0ssion is easy as hell. Really. If you want to learn how to write modules for it, visit <a href="https://github.com/namikiri/m0ssion/wiki" target="_blank">our Wiki</a> on GitHub. Basic examples and description of Galaxy's JS are provided as well.
+			</div>
+
+			<div class="about-text" id="about-legal">
+				Copyright &copy; 2017 <a href="http://identsoft.org">IDENT Software</a>
+				<br><br>
+				This software is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3</a>
+				<br>
+				Uses third-party software, see LICENSE-3rdparty file.
+			</div>
+		</div>
+	</div>
+
+
+
+	</div>
+</body>
+</html>

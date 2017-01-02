@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+
+  "name": "m0ssion framework",
+  "description": "Minimalistic and extremely extensible framework for the Galaxy chat",
+  "version": "1.0",
+  "author": "IDENT Software",
+
+  "browser_action": {
+    "default_popup": "m0ssion_popup.html"
+  },
+
+  "homepage_url" : "https://lab.densetos.com/m0ssion",
+
+  "background": {
+      "scripts": ["m0ssion_core.js"],
+      "persistent": false
+  },
+
+  "permissions": [
+    "activeTab",
+    "unlimitedStorage",
+    "storage",
+    "http://galaxy.mobstudio.ru/"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["http://galaxy.mobstudio.ru/*"],
+      "js": ["m0ssion_framework.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "options_page" : "m0ssion_main.html"
+}
