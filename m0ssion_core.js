@@ -42,6 +42,13 @@ function switchTab (object)
     $('.tab-pointer').removeClass('active');
     $('#tab-content-'+name).show();
     $('#tab-'+name).addClass('active');
+
+    // automatically scroll log, autoscroll doesn't work on hidden elements
+    if (name == 'log')
+    {
+        var  evLog = $('#event-log');
+        evLog.scrollTop(evLog[0].scrollHeight);
+    }
 }
 
 function sanitize (s)
@@ -145,7 +152,7 @@ function prepareForEdit()
         $('#module-name').val(storage.modules[index].name);
         codeEditor.setValue(storage.modules[index].code, 1);
         currentModuleIndex = index;
-        m0s_log('Editing module at index '+currentModuleIndex+' (\''+sanitize(name)+'\')');
+        m0s_log('Editing module at index '+currentModuleIndex+' (\''+sanitize(storage.modules[index].name)+'\')');
 
         switchTab('editor');
     }

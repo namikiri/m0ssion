@@ -42,7 +42,7 @@ var codeToInject = '(' + function() {
             };
 
             CONNECT.receive = function(tx) {m0s_event('receive', tx)};
-            CONNECT.send = function(tx, unused) {m0s_event('send', tx)}; // 'unused' is really unused in main.js
+            CONNECT.send = function(tx, unused) {m0s_event('send', tx)}; // 'unused' is really unused in main.js of Galaxy
 
             m0ssionEvents = {
                 receive : [],
@@ -125,7 +125,7 @@ var codeToInject = '(' + function() {
     var m0s = new M0ssion();
     m0s.init();
 
-    /*_MODULES_CODE*/
+    /*_MODULES_CODE*/ // don't remove this, it's a placeholder
 
 } + ')();';
 
