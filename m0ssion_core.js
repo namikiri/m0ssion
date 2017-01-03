@@ -38,16 +38,25 @@ function switchTab (object)
 {
     var name = (typeof object === 'object') ? $(object).data('tab-name') : object;
 
-    console.log ('stab: '+name);
     $('.tab-content').hide();
     $('.tab-pointer').removeClass('active');
     $('#tab-content-'+name).show();
     $('#tab-'+name).addClass('active');
 }
 
-function storageInit()
+function sanitize (s)
 {
+	var map = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#039;'
+		};
+		
+	s = s.replace(/[&<>"']/g, function(m) { return map[m]; });
 
+	return s;
 }
 
 function saveStorage()
@@ -57,11 +66,12 @@ function saveStorage()
 
 function loadModules()
 {
+	m0s_log('Reloading modules');
     var len = (typeof storage.modules !== 'undefined') ? storage.modules.length : 0;
 
     if (len == 0)
     {
-        console.log ("No elements!");
+        m0s_log('No elements found, probably a first run.', 'warn');
 
         storage.modules = [];
 
@@ -75,6 +85,8 @@ function loadModules()
         len++;
         saveStorage();
     }
+
+    m0s_log('Found '+len+' element(s)');
 
     var mlist = $('#modules-list');
 
@@ -90,7 +102,7 @@ function loadModules()
                             '<div class="module-tool edit" data-module-index="'+i+'"></div>' +
                             '<div class="module-tool remove" data-module-index="'+i+'"></div>' +
                         '</div>' +
-                        '<div class="module-name">'+storage.modules[i].name+'</div>' +
+                        '<div class="module-name">'+sanitize(storage.modules[i].name)+'</div>' +
                     '</div>');
     }
 
@@ -105,6 +117,8 @@ function loadModules()
     $('.module-tool.active, .module-tool.inactive').each(function (idx, ctl) {
         $(ctl).click(toggleModuleActive);
     });
+
+    m0s_log('Everything is loaded and ready.', 'info');
 }
 
 function editorReset()
@@ -125,12 +139,13 @@ function prepareForEdit()
     var index = +$(this).data('module-index');
 
     if (typeof storage.modules[index] === 'undefined')
-        console.warning("m0ssion warning: no such module, it's a bug!");
+        m0s_log('Module editing: no module at '+index+' index! That\'s a bug!', 'warn');
     else
     {
         $('#module-name').val(storage.modules[index].name);
         codeEditor.setValue(storage.modules[index].code, 1);
         currentModuleIndex = index;
+        m0s_log('Editing module at index '+currentModuleIndex+' (\''+sanitize(name)+'\')');
 
         switchTab('editor');
     }
@@ -142,6 +157,11 @@ function saveModule()
         code = codeEditor.getValue(),
         index = currentModuleIndex;
 
+    if (!name || !code)
+    {
+    	m0s_log('No module name or code present, editing cancelled!', 'warn');
+    }
+
     if (index == -1)
     {
         storage.modules.push ({
@@ -149,17 +169,21 @@ function saveModule()
             'code'   : code,
             'active' : true
         });
-
         currentModuleIndex = storage.modules.length - 1;
+
+        m0s_log('Creating a new module '+currentModuleIndex+' (\''+sanitize(name)+'\')');
+
     }
     else
     {
         if (typeof storage.modules[index] === 'undefined')
-            console.warn("m0ssion warning: no such module, it's a bug!");
+            m0s_log('Module editing: no module at '+index+' index! That\'s a bug!', 'warn');
         else
         {
             storage.modules[index].name = name;
             storage.modules[index].code = code;
+
+            m0s_log('Edited module at index '+currentModuleIndex+' (\''+sanitize(name)+'\')');
         }
     }
 
@@ -172,12 +196,14 @@ function toggleModuleActive()
     var index = +$(this).data('module-index');
 
     if (typeof storage.modules[index] === 'undefined')
-        console.warn("m0ssion warning: no such module, it's a bug!");
+        m0s_log('Module (de)activating: no module at '+index+' index! That\'s a bug!', 'warn');
     else
     {
         storage.modules[index].active = !storage.modules[index].active;
         saveStorage();
         loadModules();
+
+        m0s_log('(De)activated module at index '+index+' (\''+sanitize(storage.modules[index].name)+'\')');
     }
 }
 
@@ -186,22 +212,42 @@ function removeModule ()
     var index = +$(this).data('module-index');
 
     if (typeof storage.modules[index] === 'undefined')
-        console.warn("m0ssion warning: no such module, it's a bug!");
+        m0s_log('Module removal: no module at '+index+' index! That\'s a bug!', 'warn');
     else
     {
         storage.modules.splice(index, 1);
         saveStorage();
         loadModules();
 
+        m0s_log('Removed module at index '+currentModuleIndex);
+
         if (currentModuleIndex == index)
             currentModuleIndex = -1;
     }
 }
 
+function m0s_log (message, level = 'debug', module = 'core')
+{
+	var s = '['+module+' '+level+']: '+message,
+		evLog = $('#event-log');
+
+	evLog.append('<div class="log-entry '+level+'">'+s+'</div>');
+	evLog.scrollTop($(document).height()-$(window).height());
+
+}
+
 function m0s_init()
 {    
+	m0s_log('Welcome to m0ssion/'+M0SSION_VERSION, 'info');
     $('#m0s-version').text(M0SSION_VERSION);
 
+	chrome.runtime.onMessage.addListener(
+		function(request, sender, sendResponse) {
+			if (sender.tab) // don't receive from other exts
+				m0s_log(request.message, request.level, 'client.'+request.module);
+	});
+
+    m0s_log('Setting up UI...');
     $('.tab-pointer').each(function (idx, tab) {
         $(tab).click(function() {switchTab(this)});
     });
@@ -218,6 +264,7 @@ function m0s_init()
 
     switchTab('overview');
 
+	m0s_log('Done. Loading storage...');
     chrome.storage.local.get(function (objects) {
         storage = JSON.parse(JSON.stringify(objects));
         loadModules();

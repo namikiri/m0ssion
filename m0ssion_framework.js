@@ -59,8 +59,15 @@ var codeToInject = '(' + function() {
 
 		m0s_log = function (message, level = 'debug', module = 'core')
 		{
-			var s = '[m0ssion.'+module+' '+level+']: '+message;
-			switch (level)
+			// var s = '[m0ssion.'+module+' '+level+']: '+message;
+			
+			window.postMessage({
+		  			'message': message,
+		  			'level'  : level,
+		  			'module' : module
+				}, '*');
+
+			/*switch (level)
 			{
 				case 'error' :
 					console.error (s);
@@ -75,10 +82,10 @@ var codeToInject = '(' + function() {
 				default:
 				console.log (s);
 					break;
-			}
+			}*/
 		}
 
-		m0s_event = function (event, command)
+		m0s_event = function (event, command = '')
 		{
 			m0s_log ('Detected event '+event+'; command '+command);
 
@@ -163,9 +170,16 @@ function injectCode (storage)
 		script.textContent = codeToInject;
 		(document.head||document.documentElement).appendChild(script);
 		script.remove();
-	}
 
-	
+		window.addEventListener('message', function(event) {
+			// Only accept messages from the same frame
+			if (event.source !== window)
+				return;
+			
+			var message = event.data;
+			chrome.runtime.sendMessage(message);
+		});
+	}
 }
 
 chrome.storage.local.get(injectCode);

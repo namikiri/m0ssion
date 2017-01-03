@@ -107,9 +107,6 @@ h1, h2, h3, h4, h5
 	background: #181818;
 }
 
-.module-name
-{
-}
 
 .module-tools
 {
@@ -204,9 +201,40 @@ h1, h2, h3, h4, h5
 	margin: 5px;
 }
 
+
+#event-log
+{
+	height: 400px;
+	background: #020202;
+	box-sizing: border-box;
+	padding: 5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.log-entry
+{
+	margin: 2px;
+}
+
+.log-entry.info
+{
+	color: #ade9ff;
+}
+
+.log-entry.warn
+{
+	color: #fffdaa;
+}
+
+.log-entry.error
+{
+	color: #ff8e8e;
+}
+
 #about-legal
 {
-	margin-top: 10px;
+	margin-top: 30px;
 	font-size: 9pt;
 	color: #c0c0c0;
 	text-align: center;
