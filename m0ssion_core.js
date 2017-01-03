@@ -232,8 +232,7 @@ function m0s_log (message, level = 'debug', module = 'core')
         evLog = $('#event-log');
 
     evLog.append('<div class="log-entry '+level+'">'+s+'</div>');
-    evLog.scrollTop($(document).height()-$(window).height());
-
+    evLog.scrollTop(evLog[0].scrollHeight);
 }
 
 function m0s_init()

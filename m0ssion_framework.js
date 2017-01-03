@@ -34,7 +34,7 @@ var codeToInject = '(' + function() {
 
         this.init = function ()
         {
-            $("div.copyrights").html("Controlled by <b>m0ssion framework</b>");
+            // $("div.copyrights").html("Controlled by <b>m0ssion framework</b>");
 
             GalaxyEvents = {
                 receive : CONNECT.receive,
@@ -66,28 +66,11 @@ var codeToInject = '(' + function() {
                       'level'  : level,
                       'module' : module
                 }, '*');
-
-            /*switch (level)
-            {
-                case 'error' :
-                    console.error (s);
-                    break;
-                case 'info' :
-                    console.info (s);
-                    break;
-                case 'warn' :
-                    console.warn (s);
-                    break;
-                case 'debug' :
-                default:
-                console.log (s);
-                    break;
-            }*/
         }
 
         m0s_event = function (event, command = '')
         {
-            m0s_log ('Detected event '+event+'; command '+command);
+            m0s_log ('Event '+event+'; command '+command);
 
             switch (event)
             {
@@ -175,7 +158,7 @@ function injectCode (storage)
             // Only accept messages from the same frame
             if (event.source !== window)
                 return;
-            
+
             var message = event.data;
             chrome.runtime.sendMessage(message);
         });

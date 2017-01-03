@@ -12,7 +12,6 @@
 
   "homepage_url" : "https://lab.densetos.com/m0ssion",
 
-
   "permissions": [
     "activeTab",
     "unlimitedStorage",
