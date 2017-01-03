@@ -12,10 +12,6 @@
 
   "homepage_url" : "https://lab.densetos.com/m0ssion",
 
-  "background": {
-      "scripts": ["m0ssion_core.js"],
-      "persistent": false
-  },
 
   "permissions": [
     "activeTab",

@@ -46,17 +46,17 @@ function switchTab (object)
 
 function sanitize (s)
 {
-	var map = {
-			'&': '&amp;',
-			'<': '&lt;',
-			'>': '&gt;',
-			'"': '&quot;',
-			"'": '&#039;'
-		};
-		
-	s = s.replace(/[&<>"']/g, function(m) { return map[m]; });
+    var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        
+    s = s.replace(/[&<>"']/g, function(m) { return map[m]; });
 
-	return s;
+    return s;
 }
 
 function saveStorage()
@@ -66,7 +66,7 @@ function saveStorage()
 
 function loadModules()
 {
-	m0s_log('Reloading modules');
+    m0s_log('Reloading modules');
     var len = (typeof storage.modules !== 'undefined') ? storage.modules.length : 0;
 
     if (len == 0)
@@ -159,7 +159,7 @@ function saveModule()
 
     if (!name || !code)
     {
-    	m0s_log('No module name or code present, editing cancelled!', 'warn');
+        m0s_log('No module name or code present, editing cancelled!', 'warn');
     }
 
     if (index == -1)
@@ -228,24 +228,24 @@ function removeModule ()
 
 function m0s_log (message, level = 'debug', module = 'core')
 {
-	var s = '['+module+' '+level+']: '+message,
-		evLog = $('#event-log');
+    var s = '['+module+' '+level+']: '+message,
+        evLog = $('#event-log');
 
-	evLog.append('<div class="log-entry '+level+'">'+s+'</div>');
-	evLog.scrollTop($(document).height()-$(window).height());
+    evLog.append('<div class="log-entry '+level+'">'+s+'</div>');
+    evLog.scrollTop($(document).height()-$(window).height());
 
 }
 
 function m0s_init()
 {    
-	m0s_log('Welcome to m0ssion/'+M0SSION_VERSION, 'info');
+    m0s_log('Welcome to m0ssion/'+M0SSION_VERSION, 'info');
     $('#m0s-version').text(M0SSION_VERSION);
 
-	chrome.runtime.onMessage.addListener(
-		function(request, sender, sendResponse) {
-			if (sender.tab) // don't receive from other exts
-				m0s_log(request.message, request.level, 'client.'+request.module);
-	});
+    chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+            if (sender.tab) // don't receive from other exts
+                m0s_log(request.message, request.level, 'client.'+request.module);
+    });
 
     m0s_log('Setting up UI...');
     $('.tab-pointer').each(function (idx, tab) {
@@ -264,7 +264,7 @@ function m0s_init()
 
     switchTab('overview');
 
-	m0s_log('Done. Loading storage...');
+    m0s_log('Done. Loading storage...');
     chrome.storage.local.get(function (objects) {
         storage = JSON.parse(JSON.stringify(objects));
         loadModules();
