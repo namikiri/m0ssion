@@ -3,8 +3,12 @@
 
   "name": "m0ssion framework",
   "description": "Minimalistic and extremely extensible framework for the Galaxy chat",
-  "version": "1.0",
+  "version": "0.0.1",
   "author": "IDENT Software",
+
+  "icons": {
+          "48": "assets/icons/m0s_48.png",
+          "128": "assets/icons/m0s_128.png" },
 
   "browser_action": {
     "default_popup": "m0ssion_popup.html"
