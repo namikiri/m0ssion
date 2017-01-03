@@ -267,6 +267,7 @@ function m0s_init()
     $('#editor-save').click(saveModule);
     $('#editor-reset').click(editorReset);
     $('#modules-new').click(newModule);
+    $('#log-clear').click(function() { $('#event-log').html('')});
 
     switchTab('overview');
 
