@@ -52,15 +52,23 @@ var codeToInject = '(' + function() {
 
         }
 
+        this.sendToClient = function(command)
+        {
+            GalaxyEvents.receive(command, 0);
+        }
+
+        this.sendToServer = function(command)
+        {
+            GalaxyEvents.send(command);
+        }
+
         this.log = function (message, level = 'debug', module = 'event')
         {
             m0s_log(message, level, 'ext.'+module);
         }
 
         m0s_log = function (message, level = 'debug', module = 'core')
-        {
-            // var s = '[m0ssion.'+module+' '+level+']: '+message;
-            
+        {            
             window.postMessage({
                       'message': message,
                       'level'  : level,

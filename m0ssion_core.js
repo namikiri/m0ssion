@@ -26,7 +26,7 @@
 */
 
 var
-    M0SSION_VERSION = '0.1',
+    M0SSION_VERSION = '0.0.3',
     M0SSION_CODE_DEFAULT = "// Write your code here.\n// Reference: https://github.com/namikiri/m0ssion/wiki\n\n";
 
 var
