@@ -49,16 +49,45 @@ var codeToInject = '(' + function() {
                 send    : []
             }
 
+            window.addEventListener('message', function(event) {
+                // Only accept messages from the same frame
+                if (event.source !== window)
+                    return;
+
+                var message = event.data;
+                if (typeof message.type !== 'undefined' && message.type == 'command')
+                {
+                    var command = message.command;
+                    switch (message.target)
+                    {
+                        case 'server' :
+                            m0s_log('server: '+command, 'info', 'command');
+                            GalaxyEvents.send(command);
+                            break;
+
+                        case 'client' :
+                            m0s_log('client: '+command, 'info', 'command');
+                            GalaxyEvents.receive(command, 0);
+                            break;
+
+                        default :
+                            m0s_log('Got bad command event, oh shish!', 'error', 'command');
+                            break;
+                    }
+                }
+            });
 
         }
 
         this.sendToClient = function(command)
         {
+            m0s_log('client: '+command, 'info', 'command');
             GalaxyEvents.receive(command, 0);
         }
 
         this.sendToServer = function(command)
         {
+            m0s_log('server: '+command, 'info', 'command');
             GalaxyEvents.send(command);
         }
 
@@ -70,9 +99,10 @@ var codeToInject = '(' + function() {
         m0s_log = function (message, level = 'debug', module = 'core')
         {            
             window.postMessage({
-                      'message': message,
-                      'level'  : level,
-                      'module' : module
+                      'type'    : 'log',
+                      'message' : message,
+                      'level'   : level,
+                      'module'  : module
                 }, '*');
         }
 
@@ -150,26 +180,39 @@ function injectCode (storage)
         {
             if (storage.modules[i].active)
             {
-                console.log ("m0ssion: adding module '"+storage.modules[i].name+"'");
+                console.log ("m0ssion: loading module '"+storage.modules[i].name+"'");
                 modulesCode += '(function() { ' + storage.modules[i].code + "\n})();";
             }
         }
 
         codeToInject = codeToInject.replace('/*_MODULES_CODE*/', modulesCode);
 
-        var script = document.createElement('script');
-        script.textContent = codeToInject;
-        (document.head||document.documentElement).appendChild(script);
-        script.remove();
-
+        // Receive messages FROM the chat (modules+protocol log)
         window.addEventListener('message', function(event) {
-            // Only accept messages from the same frame
             if (event.source !== window)
                 return;
 
             var message = event.data;
-            chrome.runtime.sendMessage(message);
+
+            if (typeof message.type !== 'undefined' && message.type === 'log')
+                chrome.runtime.sendMessage(message);
         });
+
+        chrome.runtime.onMessage.addListener(
+            function(request, sender, sendResponse) {
+                if (typeof request.type !== 'undefined' && request.type === 'command')
+                    window.postMessage({
+                      'type'    : 'command',
+                      'target'  : request.target,
+                      'command' : request.command
+                    }, '*');
+        });
+
+
+        var script = document.createElement('script');
+        script.textContent = codeToInject;
+        (document.head||document.documentElement).appendChild(script);
+        script.remove();
     }
 }
 

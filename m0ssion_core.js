@@ -26,10 +26,6 @@
 */
 
 var
-    M0SSION_VERSION = '0.0.3',
-    M0SSION_CODE_DEFAULT = "// Write your code here.\n// Reference: https://github.com/namikiri/m0ssion/wiki\n\n";
-
-var
     storage = {},
     codeEditor = null,
     currentModuleIndex = -1;
@@ -233,25 +229,12 @@ function removeModule ()
     }
 }
 
-function m0s_log (message, level = 'debug', module = 'core')
-{
-    var s = '['+module+' '+level+']: '+message,
-        evLog = $('#event-log');
-
-    evLog.append('<div class="log-entry '+level+'">'+s+'</div>');
-    evLog.scrollTop(evLog[0].scrollHeight);
-}
-
 function m0s_init()
 {    
     m0s_log('Welcome to m0ssion/'+M0SSION_VERSION, 'info');
     $('#m0s-version').text(M0SSION_VERSION);
 
-    chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
-            if (sender.tab) // don't receive from other exts
-                m0s_log(request.message, request.level, 'client.'+request.module);
-    });
+    logControlsInit();
 
     m0s_log('Setting up UI...');
     $('.tab-pointer').each(function (idx, tab) {
@@ -267,7 +250,6 @@ function m0s_init()
     $('#editor-save').click(saveModule);
     $('#editor-reset').click(editorReset);
     $('#modules-new').click(newModule);
-    $('#log-clear').click(function() { $('#event-log').html('')});
 
     switchTab('overview');
 
