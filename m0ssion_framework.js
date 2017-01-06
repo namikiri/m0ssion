@@ -141,7 +141,7 @@ var codeToInject = '(' + function() {
 
         }
 
-        this.add_event = function (name, fun)
+        this.addEvent = function (name, fun)
         {
             switch (name)
             {

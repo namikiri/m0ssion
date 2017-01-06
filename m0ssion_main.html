@@ -71,7 +71,11 @@
 		</div>
 
 		<div class="tab-content" id="tab-content-editor">
-			<h2>Module editor</h2>
+			<div id="editor-wrap">
+			<div id="editor-header-wrap"> <!-- this prevents flex from moving expand btn -->
+				<div id="editor-fullscreen-toggler" class="editor-fullscreen expand" title="Toggle editor fullscreen mode"></div> 
+				<h2>Module editor</h2>
+			</div>
 			<input type="text" class="control text" id="module-name" placeholder="Name of your module">
 			<div id="module-code">// Write your code here.
 // Reference: https://github.com/namikiri/m0ssion/wiki
@@ -81,6 +85,7 @@
 			<div id="editor-tools" class="buttonset">
 				<div class="control button" id="editor-save" title="Save current module">Save</div>
 				<div class="control button" id="editor-reset" title="Clear all fields">Reset</div>
+			</div>
 			</div>
 		</div>
 

@@ -28,7 +28,8 @@
 var
     storage = {},
     codeEditor = null,
-    currentModuleIndex = -1;
+    currentModuleIndex = -1,
+    editorFullscreen = false;
 
 function switchTab (object)
 {
@@ -101,9 +102,9 @@ function loadModules()
 
         mlist.append('<div class="module" id="module-'+i+'">'+
                         '<div class="module-tools">' +
-                            '<div class="module-tool '+modState+'" data-module-index="'+i+'"></div>' +
-                            '<div class="module-tool edit" data-module-index="'+i+'"></div>' +
-                            '<div class="module-tool remove" data-module-index="'+i+'"></div>' +
+                            '<div class="module-tool '+modState+'" data-module-index="'+i+'" title="Activate/deactivate this module"></div>' +
+                            '<div class="module-tool edit" data-module-index="'+i+'" title="Edit the code of this module"></div>' +
+                            '<div class="module-tool remove" data-module-index="'+i+'" title="Remove this module"></div>' +
                         '</div>' +
                         '<div class="module-name">'+sanitize(storage.modules[i].name)+'</div>' +
                     '</div>');
@@ -129,6 +130,31 @@ function editorReset()
     $('#module-name').val('');
     codeEditor.setValue(M0SSION_CODE_DEFAULT, 1);
     currentModuleIndex = -1;
+}
+
+function toggleEditorFullscreen()
+{
+    var ed = $('#editor-wrap'),
+        tg = $('#editor-fullscreen-toggler');
+
+    if (ed.hasClass('fullscreen'))
+    {
+        tg.removeClass('collapse');
+        tg.addClass('expand');
+        ed.removeClass('fullscreen');
+
+        $('#module-code').removeClass('fullscreen');
+    }
+    else
+    {
+        tg.removeClass('expand');
+        tg.addClass('collapse');
+        ed.addClass('fullscreen');
+
+        $('#module-code').addClass('fullscreen');
+    }
+
+    codeEditor.resize();
 }
 
 function newModule()
@@ -250,6 +276,7 @@ function m0s_init()
     $('#editor-save').click(saveModule);
     $('#editor-reset').click(editorReset);
     $('#modules-new').click(newModule);
+    $('#editor-fullscreen-toggler').click(toggleEditorFullscreen);
 
     switchTab('overview');
 
