@@ -31,7 +31,7 @@ var
 
 function m0s_log (message, level = 'debug', module = 'core')
 {
-    var s = '['+module+' '+level+']: '+message,
+    var s = '['+module+' '+level+']: '+sanitize(message),
         evLog = $('#event-log');
 
     evLog.append('<div class="log-entry '+level+'">'+s+'</div>');
@@ -87,4 +87,19 @@ function logControlsInit()
     $('#command-to-client').keydown(sendEvent);
     $('#command-to-server').keydown(sendEvent);
 
+}
+
+function sanitize (s)
+{
+    var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        
+    s = s.replace(/[&<>"']/g, function(m) { return map[m]; });
+
+    return s;
 }

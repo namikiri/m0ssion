@@ -48,21 +48,6 @@ function switchTab (object)
     }
 }
 
-function sanitize (s)
-{
-    var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        
-    s = s.replace(/[&<>"']/g, function(m) { return map[m]; });
-
-    return s;
-}
-
 function saveStorage()
 {
     chrome.storage.local.set(storage);

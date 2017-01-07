@@ -2,6 +2,7 @@
   "manifest_version": 2,
 
   "name": "m0ssion framework",
+  "short_name": "m0ssion",
   "description": "Minimalistic extensible in-browser framework for the Galaxy chat",
   "version": "0.1.0",
   "author": "IDENT Software",
