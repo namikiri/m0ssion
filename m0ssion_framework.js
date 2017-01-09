@@ -51,7 +51,8 @@ var codeToInject = '(' + function() {
 
             window.addEventListener('message', function(event) {
                 // Only accept messages from the same frame
-                if (event.source !== window)
+                if (event.source !== window &&
+                	event.origin !== 'http://galaxy.mobstudio.ru')
                     return;
 
                 var message = event.data;
@@ -91,7 +92,7 @@ var codeToInject = '(' + function() {
             GalaxyEvents.send(command);
         }
 
-        this.log = function (message, level = 'debug', module = 'event')
+        this.log = function (message, level = 'debug', module = 'module')
         {
             m0s_log(message, level, 'ext.'+module);
         }
@@ -103,7 +104,7 @@ var codeToInject = '(' + function() {
                       'message' : message,
                       'level'   : level,
                       'module'  : module
-                }, '*');
+                }, 'http://galaxy.mobstudio.ru');
         }
 
         m0s_event = function (event, command = '')
@@ -189,7 +190,8 @@ function injectCode (storage)
 
         // Receive messages FROM the chat (modules+protocol log)
         window.addEventListener('message', function(event) {
-            if (event.source !== window)
+            if (event.source !== window &&
+             	event.origin !== 'http://galaxy.mobstudio.ru')
                 return;
 
             var message = event.data;
@@ -205,7 +207,7 @@ function injectCode (storage)
                       'type'    : 'command',
                       'target'  : request.target,
                       'command' : request.command
-                    }, '*');
+                    }, 'http://galaxy.mobstudio.ru');
         });
 
 

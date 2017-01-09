@@ -4,7 +4,7 @@
   "name": "m0ssion framework",
   "short_name": "m0ssion",
   "description": "Minimalistic extensible in-browser framework for the Galaxy chat",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "IDENT Software",
 
   "icons": {
