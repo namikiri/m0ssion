@@ -31,6 +31,26 @@ var
     currentModuleIndex = -1,
     editorFullscreen = false;
 
+
+function showMessage (message, type)
+{
+    type = type || 'info';
+
+    var id = randword();
+
+    $('#messages-wrapper').append('<div class="message '+type+'" id="'+id+'">'
+        +message+'</div>');
+
+    var block = $('#'+id);
+
+    block.click(function() {block.fadeOut(100, function() { block.remove(); });});
+
+    setTimeout(function() {block.fadeOut(100, function() { block.remove(); });},
+        5000);
+
+    block.fadeIn(100);
+}
+
 function switchTab (object)
 {
     var name = (typeof object === 'object') ? $(object).data('tab-name') : object;
@@ -174,6 +194,8 @@ function saveModule()
     if (!name || !code)
     {
         m0s_log('No module name or code present, editing cancelled!', 'warn');
+        showMessage('No module name or code, will not save.', 'error');
+        return;
     }
 
     if (index == -1)
@@ -186,7 +208,7 @@ function saveModule()
         currentModuleIndex = storage.modules.length - 1;
 
         m0s_log('Creating a new module '+currentModuleIndex+' (\''+sanitize(name)+'\')');
-
+        showMessage('Added new module '+sanitize(name));
     }
     else
     {
@@ -198,6 +220,8 @@ function saveModule()
             storage.modules[index].code = code;
 
             m0s_log('Edited module at index '+currentModuleIndex+' (\''+sanitize(name)+'\')');
+
+            showMessage(sanitize(name)+' edited successfully');
         }
     }
 
@@ -218,6 +242,9 @@ function toggleModuleActive()
         loadModules();
 
         m0s_log('(De)activated module at index '+index+' (\''+sanitize(storage.modules[index].name)+'\')');
+
+        showMessage(sanitize(storage.modules[index].name) + ' has been successfully '
+            +(storage.modules[index].active ? '' : 'de')+'activated');
     }
 }
 
@@ -229,11 +256,14 @@ function removeModule ()
         m0s_log('Module removal: no module at '+index+' index! That\'s a bug!', 'warn');
     else
     {
+        var name = storage.modules[index].name;
         storage.modules.splice(index, 1);
         saveStorage();
         loadModules();
 
         m0s_log('Removed module at index '+currentModuleIndex);
+
+        showMessage(sanitize(name) + ' has been successfully removed.');
 
         if (currentModuleIndex == index)
             currentModuleIndex = -1;

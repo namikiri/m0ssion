@@ -50,6 +50,41 @@ h1, h2, h3, h4, h5
 	font-weight: 300;
 }
 
+#messages-wrapper
+{
+	position: fixed;
+	width: 100%;
+}
+
+.message
+{
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	font-size: 18pt;
+	font-weight: 300;
+	display: none;
+	cursor: pointer;
+}
+
+.message.error
+{
+	background: #210000;
+	color: #fc0000;
+}
+
+.message.warn
+{
+	background: #444404;
+	color: #fcfc11;
+}
+
+.message.info
+{
+	background: #042944;
+	color: #00e5ff;
+}
+
 #wrapper
 {
 	margin: 0 auto;
